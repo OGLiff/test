@@ -1,0 +1,14 @@
+# Force https (needed for the Supabase magic link)
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Always load the latest version of the app
+<FilesMatch "\.(html|php)$">
+  Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+
+# Keep the event cache private
+<Files "ff-cache.json">
+  Require all denied
+</Files>
