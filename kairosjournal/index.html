@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kairos Journal</title>
+<title>Liffeth's Journal</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191919'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23f1f1f1' stroke-width='3.2' stroke-dasharray='47 15.8' transform='rotate(-62 16 16)'/%3E%3Ccircle cx='23.8' cy='9' r='3.4' fill='%23EF9F27'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#191919">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -347,7 +347,7 @@ table.compact td.wrap{white-space:normal;max-width:180px}
 <div id="gate" class="gate"></div>
 <div class="page">
   <div class="top">
-    <h1 class="brand"><svg class="logo" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-dasharray="52 17.2" transform="rotate(-62 16 16)"/><circle cx="24.6" cy="8.3" r="3.6" fill="#EF9F27"/></svg>Kairos <span>Journal</span></h1>
+    <h1 class="brand"><svg class="logo" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-dasharray="52 17.2" transform="rotate(-62 16 16)"/><circle cx="24.6" cy="8.3" r="3.6" fill="#EF9F27"/></svg>Liffeth's <span>Journal</span></h1>
     <div class="row">
       <span id="syncSt" class="syncst"></span>
       <div class="rwrap"><button type="button" id="rangeBtn" class="rangebtn" aria-haspopup="dialog"></button><div id="rangePop" class="rpop" hidden></div></div>
@@ -1409,7 +1409,7 @@ function unlock(){document.body.classList.remove('locked');$('#gate').innerHTML=
 function renderGate(state){const g=$('#gate');
   const body=state==='loading'?'<p class="hint">Loading…</p>':!sb?'<p class="hint dn">The sign-in service can’t be reached. Check your connection and reload the page.</p>':
     `<form id="gForm"><input type="email" id="gEmail" required placeholder="name@email.com" autocomplete="email" aria-label="Email"><button class="pri" type="submit">Send sign-in link</button></form><p class="hint" id="gMsg" aria-live="polite" style="min-height:20px"></p>`;
-  g.innerHTML=`<div class="gbox">${LOGO_SVG}<h1>Kairos <span style="font-weight:400;color:var(--mut)">Journal</span></h1><p class="hint" style="margin:0">Private journal. Sign in to continue.</p>${body}</div>`;
+  g.innerHTML=`<div class="gbox">${LOGO_SVG}<h1>Liffeth's <span style="font-weight:400;color:var(--mut)">Journal</span></h1><p class="hint" style="margin:0">Private journal. Sign in to continue.</p>${body}</div>`;
   const f=$('#gForm');if(!f)return;
   f.onsubmit=async e=>{e.preventDefault();const em=$('#gEmail').value.trim(),msg=$('#gMsg'),btn=f.querySelector('button');
     if(location.protocol==='file:'){msg.innerHTML='<span class="dn">Open the online site to sign in: the link can’t reopen a local file.</span>';return}
