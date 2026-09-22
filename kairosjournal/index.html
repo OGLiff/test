@@ -39,12 +39,6 @@ button.ghost:hover{background:var(--hov);color:var(--ink)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 /* ticker */
 .ticker{display:flex;overflow-x:auto;border:1px solid var(--line);border-radius:6px;margin-bottom:14px;background:var(--surf)}
-.tk{padding:10px 16px;border-right:1px solid var(--line);min-width:140px}
-.tk:last-child{border-right:0}
-.tk .s{font-size:12px;color:var(--mut);font-weight:500}
-.tk .p{font-size:19px;font-weight:600;color:var(--strong)}
-.tk .c{font-size:12.5px}
-.tk.status{min-width:180px;color:var(--mut);font-size:12.5px;display:flex;flex-direction:column;justify-content:center}
 .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:var(--be)}
 .dot.ok{background:var(--gain)}.dot.err{background:var(--loss)}
 .up{color:var(--gain)}.dn{color:var(--loss)}
@@ -697,12 +691,11 @@ function renderStats(){
   let bn='';
   accs.forEach(a=>{const lim=+a.dailyStop;if(!lim)return;
     const d=summary(S.trades.filter(t=>t.accountId===a.id&&dayOf(t)===today())).net;
-    if(d<=-lim)bn+=`<div class="banner bad">${esc(a.name)}: daily loss limit hit (${fmt$(d)} of -${fmt$(lim,0).slice(1)}). Close the platform for today.</div>`;
+    if(d<=-lim)bn+=`<div class="banner bad">${esc(a.name)}: daily loss limit hit (${fmt$(d)} of ${fmt$(-lim,0)}). Close the platform for today.</div>`;
     else if(d<=-lim*0.75)bn+=`<div class="banner warn">${esc(a.name)}: you are at ${fmt$(d)} today, close to the daily loss limit of ${fmt$(lim,0)}.</div>`;});
   $('#banner').innerHTML=bn;
   renderEquity(dep);renderCal();renderToday();renderRules();renderBreakdown();renderKScore();renderNav();renderRangeBtn();
 }
-let eqP='month';
 function renderEquity(dep){
   const{a}=rangeBounds(),all=summary(accTrades()).closed.slice().sort((x,y)=>(x.t.date||'').localeCompare(y.t.date||''));
   $('#eqLbl2').textContent=rangeLabel();
@@ -858,13 +851,6 @@ function renderBreakdown(){
   (!rows.length?'<div class="empty-st">Stats appear after your first closed trades.</div>':`<div class="tw"><table><tr><th>${{setup:'Setup',session:'Session',weekday:'Weekday',mistake:'Mistake',plan:'Plan followed'}[bdKind]}</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Avg R</th><th class="num">Net P/L</th></tr>`+
   rows.map(r=>{const wr=r.w+r.l?r.w/(r.w+r.l)*100:null,ar=r.rn?r.R/r.rn:null;return`<tr><td>${esc(r.k)}</td><td class="num">${r.n}</td><td class="num">${wr==null?'–':Math.round(wr)+'%'}</td><td class="num ${cls(ar)}">${ar==null?'–':(ar>0?'+':'')+ar.toFixed(2)+'R'}</td><td class="num ${cls(r.net)}">${fmt$(r.net)}</td></tr>`}).join('')+'</table></div>');
 }
-function renderBestWorst(){
-  const rows=groupStats('setup').filter(r=>r.k!=='No setup');
-  if(rows.length<2){$('#bestWorst').innerHTML='';return}
-  const card=(t,r,c)=>{const wr=r.w+r.l?Math.round(r.w/(r.w+r.l)*100)+'%':'–',ar=r.rn?r.R/r.rn:null;return`<div class="card"><h3>${t} <span class="pill ${c}">${esc(r.k)}</span></h3><div class="kv"><div><span>Trades</span><b>${r.n}</b></div><div><span>Win rate</span><b>${wr}</b></div><div><span>Avg R</span><b class="${cls(ar)}">${ar==null?'–':(ar>0?'+':'')+ar.toFixed(2)+'R'}</b></div><div><span>Net P/L</span><b class="${cls(r.net)}">${fmt$(r.net,0)}</b></div></div></div>`};
-  $('#bestWorst').innerHTML=card('Best setup',rows[0],'win')+card('Worst setup',rows.at(-1),'loss');
-}
-
 /* ---------- trades ---------- */
 function renderTrades(){
   const fr=$('#fRes').value,ft=$('#fTag').value;
@@ -1000,7 +986,6 @@ $('#newTrade').onclick=()=>openTrade();$('#newAcc').onclick=()=>openAcc();$('#ne
 $('#fRes').onchange=renderTrades;$('#fTag').onchange=renderTrades;
 $('#calPrev').onclick=()=>{calM.setMonth(calM.getMonth()-1);renderCal()};$('#calNext').onclick=()=>{calM.setMonth(calM.getMonth()+1);renderCal()};
 document.addEventListener('click',e=>{
-  const eq=e.target.closest('[data-eqp]');if(eq){eqP=eq.dataset.eqp;renderStats();return}
   const bd=e.target.closest('[data-bd]');if(bd){bdKind=bd.dataset.bd;renderBreakdown();return}
   const nf=e.target.closest('[data-nf]');if(nf){noteF=nf.dataset.nf;renderDiary();return}
   const d=e.target.dataset||{};
